@@ -63,11 +63,12 @@ class Theme {
         return theme;
     }
 
-    draw(row, col, value) {
-        if(value === 0) {
+    draw(row, col, val) {
+        let int_value = Math.round(this.maxval * val);
+        if(int_value === 0) {
             console.error("Not implemented yet");
         } else {
-            let w = this.windows[row][col][value];
+            let w = this.windows[row][col][int_value];
             this._context.drawImage(this._image, w.src_x, w.src_y, w.width, w.height, w.x, w.y, w.width, w.height);
         }
     }
