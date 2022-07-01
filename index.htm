@@ -7,5 +7,39 @@
         <canvas id="canvas"></canvas>
         <script src="theme.js"></script>
         <script src="bml-parser.js"></script>
+        <script>
+            function wait(ms) {
+                return new Promise((resolve, reject) => {
+                    setTimeout(resolve, ms);
+                });
+            }
+            const THEME_DEFAULTS = {
+                '26x20': 'themes/bnf-1024x768.xml',
+                '16x3': 'themes/gondwana-640x120.xml',
+                '18x8': 'themes/hdl2-1024x768.xml',
+                '35x21': 'themes/pulsar-1024x768.xml',
+                '96x32': 'themes/tch-800x600.xml'
+            };
+            (async function() {
+                if(location.hash.length === 0) {
+                    alert('No URL provided!');
+                } else {
+                    let url = window.location.hash.substring(1);
+                    let bmltext = await fetch(url).then(resp => resp.text());
+                    let bml = parseBML(bmltext);
+                    let resolution = `${bml.width}x${bml.height}`;
+                    let themeURL = THEME_DEFAULTS[resolution];
+                    if(!themeURL) {
+                        alert(`No compatible theme found for movie with resolution ${resolution}`);
+                        return;
+                    }
+                    let theme = await Theme.retrieve(themeURL, document.querySelector('#canvas'));
+                    for(let frame of bml.frames) {
+                        theme.drawFrame(frame);
+                        await wait(frame.duration);
+                    }
+                }
+            })();
+        </script>
     </body>
 </html>
