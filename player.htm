@@ -46,10 +46,13 @@
                     document.querySelector('#creator').textContent = bml.creator;
                     document.querySelector('#description').textContent = bml.description;
                     let theme = await Theme.retrieve(themeURL, document.querySelector('#canvas'));
-                    for(let frame of bml.frames) {
-                        theme.drawFrame(frame);
-                        await wait(frame.duration);
-                    }
+                    do {
+                        for(let frame of bml.frames) {
+                            theme.drawFrame(frame);
+                            await wait(frame.duration);
+                        }
+                    } while(bml.loop)
+
                 }
             })();
         </script>
