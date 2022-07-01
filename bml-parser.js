@@ -22,7 +22,7 @@ function parseBML(xmlString) {
     bml.hexdigits_per_column = Math.ceil(bml.bits/4);
     let headerElement = blmElement.querySelector("header");
     for(let headerAttr of ['name', 'description', 'creator', 'author']) {
-        bml[headerAttr] = headerElement.querySelector(headerAttr)?.textContent;
+        bml[headerAttr] = headerElement?.querySelector(headerAttr)?.textContent;
     }
     for(let xmlFrame of Array.from(xmlDom.querySelectorAll('frame'))) {
         let frame = new Float32Array(bml.width * bml.height);
