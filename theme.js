@@ -50,7 +50,7 @@ class Theme {
                 theme.windows[row][column] = [];
                 for(let value = 0; value <= theme.maxval; value++) {
                     let relevant_windows = windows.filter(w => w.row === row && w.column === column && (w.value === value || w.value === null));
-                    if(relevant_windows.length !== 1) {
+                    if(relevant_windows.length !== 1 && value !== 0) {
                         console.error(`Weird windows, row ${row} column ${column} value ${value}`);
                     }
                     if(relevant_windows.length > 0) {
