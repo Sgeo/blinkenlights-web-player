@@ -24,7 +24,7 @@ function parseBML(xmlString) {
     for(let headerAttr of ['name', 'title', 'description', 'creator', 'author']) {
         bml[headerAttr] = headerElement?.querySelector(headerAttr)?.textContent ?? '';
     }
-    bml.loop = headerElement?.querySelector('loop').textContent === 'yes';
+    bml.loop = headerElement?.querySelector('loop')?.textContent === 'yes';
     for(let xmlFrame of Array.from(xmlDom.querySelectorAll('frame'))) {
         let frame = new Float32Array(bml.width * bml.height);
         Array.from(xmlFrame.querySelectorAll('row')).forEach((rowElement, rowIndex) => {
