@@ -4,6 +4,13 @@
         <title>Blinkenlights Web Player</title>
     </head>
     <body>
+        <ul>
+            <li>Name: <span id="name"></span></li>
+            <li>Title: <span id="title"></span></li>
+            <li>Author: <span id="author"></span></li>
+            <li>Creator: <span id="creator"></span></li>
+            <li>Description: <span id="description"></span></li>
+        </ul>
         <canvas id="canvas"></canvas>
         <script src="theme.js"></script>
         <script src="bml-parser.js"></script>
@@ -33,6 +40,11 @@
                         alert(`No compatible theme found for movie with resolution ${resolution}`);
                         return;
                     }
+                    document.querySelector('#name').textContent = bml.name;
+                    document.querySelector('#title').textContent = bml.title;
+                    document.querySelector('#author').textContent = bml.author;
+                    document.querySelector('#creator').textContent = bml.creator;
+                    document.querySelector('#description').textContent = bml.description;
                     let theme = await Theme.retrieve(themeURL, document.querySelector('#canvas'));
                     for(let frame of bml.frames) {
                         theme.drawFrame(frame);
