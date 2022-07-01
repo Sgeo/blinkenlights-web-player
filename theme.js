@@ -66,11 +66,20 @@ class Theme {
     draw(row, col, val) {
         let int_value = Math.round(this.maxval * val);
         if(int_value === 0) {
-            console.error("Not implemented yet");
+            //console.error("Not implemented yet");
         } else {
             let w = this.windows[row][col][int_value];
             this._context.drawImage(this._image, w.src_x, w.src_y, w.width, w.height, w.x, w.y, w.width, w.height);
         }
+    }
+
+    drawFrame(frame) {
+        this.clear();
+        frame.forEach((value, index) => {
+            let column = index % this.columns;
+            let row = Math.floor(index/this.columns);
+            this.draw(row, column, value);
+        });
     }
 
     clear() {
