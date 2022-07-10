@@ -41,3 +41,56 @@ function parseBML(xmlString) {
     }
     return bml;
 }
+
+function parseBLM(blmString) {
+    let blmLines = blmString.split('\n');
+    let blm = {
+        name: '',
+        description: '',
+        creator: '',
+        author: '',
+        loop: false,
+        duration: 0,
+        width: null,
+        height: null,
+        bits: 1,
+        channels: 1,
+        frames: []
+    };
+
+    let header_done = false;
+    let frame = null;
+    let frame_line = 0;
+
+    for(let line of blmLines) {
+        if(blm.width === null) {
+            let movie_header_search = /# *BlinkenLights Movie *(\d+)x(\d+)$/.exec(line);
+            if(movie_header_search) {
+                let [, width_string, height_string] = movie_header_search;
+                blm.width = parseInt(width_string, 10);
+                blm.height = parseInt(height_string, 10);
+            }
+        }
+        if(!header_done) {
+            let header_search = /# (name|title|description|creator|author) *= *(.+)$/.exec(line);
+            if(header_search) {
+                blm[header_search[1]] = header_search[2]
+            }
+        }
+        if(line.startsWith('@')) {
+            header_done = true;
+            frame = new Float32Array(blm.width * blm.height);
+            frame.duration = parseInt(/@(\d+)$/.exec(line)[1], 10);
+            frame_line = 0;
+            blm.frames.push(frame);
+        } else if(frame && /^[01]+$/.test(line)) {
+            for(let columnIndex = 0; columnIndex < blm.width; columnIndex++) {
+                let valueText = line[columnIndex];
+                let value = parseInt(valueText, 16);
+                frame[frame_line * blm.width + columnIndex] = value;
+            }
+            frame_line+=1;
+        }
+    }
+    return blm;
+}

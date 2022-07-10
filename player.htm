@@ -33,7 +33,7 @@
                 } else {
                     let url = window.location.hash.substring(1);
                     let bmltext = await fetch(url).then(resp => resp.text());
-                    let bml = parseBML(bmltext);
+                    let bml = url.endsWith('.blm') ? parseBLM(bmltext) : parseBML(bmltext);
                     let resolution = `${bml.width}x${bml.height}`;
                     let themeURL = THEME_DEFAULTS[resolution];
                     if(!themeURL) {
